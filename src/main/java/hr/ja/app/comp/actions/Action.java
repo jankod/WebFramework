@@ -5,7 +5,7 @@ import java.io.StringWriter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class Action {
+public abstract class Action {
 
 	
 	public String toJson() {
@@ -18,4 +18,7 @@ public class Action {
 		}
 		return w.toString();
 	}
+	
+	public abstract String getPageId();
+		
 }

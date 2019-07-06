@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script src="jquery-3.4.1.js"></script>
+    <script>var PAGE_ID="$pageId";</script>
+    <script src="main.js"></script>
+</head>
+
+$bodyHtml
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+       //console.log("dodao sam tak ovaj");
+        //$("#2323").append( "alert('delaa');");
+       // $("body").append("<script>alert('hello world');<\/script>");
+    });
+
+
+</script>
+
+</html>

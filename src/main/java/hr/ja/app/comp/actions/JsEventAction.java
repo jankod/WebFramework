@@ -8,11 +8,18 @@ public class JsEventAction extends Action {
 	private String eleId;
 	private String serverListenerId;
 	private String actionName;
+	private String pageId;
 
-	public JsEventAction(String eleId, String serverListenerId, String actionName) {
+	public JsEventAction(String eleId, String serverListenerId, String actionName, String pageId) {
 		this.eleId = eleId;
 		this.serverListenerId = serverListenerId;
 		this.actionName = actionName;
+		this.pageId = pageId;
+	}
+
+	@Override
+	public String getPageId() {
+		return pageId;
 	}
 
 }

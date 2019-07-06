@@ -5,11 +5,12 @@ import j2html.tags.ContainerTag;
 
 public class Tag extends ContainerTag {
 
+	String pageId;
 	private String id;
 
 	public Tag(String tagName) {
 		super(tagName);
-		
+
 		id = TagUtil.createID();
 		withId(id);
 	}
@@ -21,13 +22,17 @@ public class Tag extends ContainerTag {
 
 	public void add(Tag tag) {
 		this.with(tag);
-		if(tag.getClass().isAssignableFrom(EventListener.class)) {
+		if (tag.getClass().isAssignableFrom(EventListener.class)) {
 			EventListener e = (EventListener) tag;
 		}
 	}
-	
+
 	public String getId() {
 		return id;
+	}
+	
+	public String getPageId() {
+		return pageId;
 	}
 
 }

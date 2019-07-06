@@ -23,13 +23,10 @@ public class PageActionsBus {
 	public void add(Tag tag, ClickListener listener) {
 
 		String serverListenerId = addListener(listener);
-		// actionsQueue.add(new JsEventAction(button.getId(), serverListenerId,
-		// "click"));
-		log.debug("Dodajem akciju,.,,,");
-		actionsQueue.add(new JsEventAction(tag.getId(), serverListenerId, "click"));
+		actionsQueue.add(new JsEventAction(tag.getId(), serverListenerId, "click", tag.getId()));
 	}
 
-	private int listenerId = 1;
+	private int listenerId = 1; // TODO: listener id start ioncrement by paga session od user session
 
 	private String addListener(ClickListener listener) {
 		String id = listenerId++ + "";

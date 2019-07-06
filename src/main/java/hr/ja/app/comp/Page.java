@@ -17,10 +17,10 @@ public abstract class Page {
 	}
 
 	protected void init() {
-
 	}
 
 	protected void add(Tag tag) {
+		tag.pageId = this.id;
 		bodyTag.add(tag);
 	}
 
