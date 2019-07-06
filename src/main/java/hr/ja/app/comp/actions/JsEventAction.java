@@ -11,6 +11,7 @@ public class JsEventAction extends Action {
 	private String pageId;
 
 	public JsEventAction(String eleId, String serverListenerId, String actionName, String pageId) {
+		assert pageId != null: "Page id is null";
 		this.eleId = eleId;
 		this.serverListenerId = serverListenerId;
 		this.actionName = actionName;

@@ -3,8 +3,11 @@ package hr.ja.app;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 import org.eclipse.jetty.websocket.api.RemoteEndpoint;
 import org.eclipse.jetty.websocket.api.Session;
@@ -21,27 +24,42 @@ import lombok.extern.slf4j.Slf4j;
 @WebSocket
 public class StateWebSocketHandler {
 
-	final List<Session> sessions = new ArrayList<>();
 	private PageManager pageManager;
 
 	public StateWebSocketHandler(PageManager pageManager) {
+
 		this.pageManager = pageManager;
+		listenServerBus();
 	}
+
+	private HashMap<String, Session> connectedPageId = new HashMap<>();
 
 	@OnWebSocketConnect
 	public void onConnect(Session session) throws Exception {
-		sessions.add(session);
 		InetSocketAddress addr = session.getRemoteAddress();
-		String pageId =  AppUtil.getPageId(session);
-		
-		log.debug("User connect: {} ima ih: {}", addr, sessions.size());
-		listenServerBus();
+		String pageId = AppUtil.getPageId(session);
+		connectedPageId.put(pageId, session);
+
+		log.debug("User connect, pageID: {}", pageId);
+
+		// start salji evente za ovaj page id
+	}
+
+	protected void sendAction(Action action) {
+		try {
+			RemoteEndpoint remote = connectedPageId.get(action.getPageId()).getRemote();
+			remote.sendString(action.toJson());
+			
+		} catch (IOException e) {
+			log.error("", e);
+		}
 	}
 
 	@OnWebSocketClose
 	public void onClose(Session user, int statusCode, String reason) {
-		log.debug("close " + user.getRemoteAddress());
-		sessions.remove(user);
+		log.debug("close status: {} reason: {}", statusCode, reason);
+		String pageId = AppUtil.getPageId(user);
+		connectedPageId.remove(pageId);
 	}
 
 	@OnWebSocketMessage
@@ -50,35 +68,38 @@ public class StateWebSocketHandler {
 	}
 
 	private void listenServerBus() {
+		LinkedBlockingQueue<Action> q = PageActionsBus.get().getActionsQueue();
 		Thread t = new Thread() {
 			@Override
 			public void run() {
 				while (true) {
-					LinkedBlockingQueue<Action> q = PageActionsBus.get().getActionsQueue();
-					log.debug("q ima: {}", q.size());
-					Action action = null;
-					try {
-						action = q.take();
-					} catch (InterruptedException e1) {
-						log.error("", e1);
-					}
-					if (sessions.isEmpty()) {
-						log.warn("Nema sessije ni jedne!!!");
-					}
-					for (Session s : sessions) {
-						synchronized (s) {
-							try {
-								if (action != null) {
-									log.debug("saljem action {}", action.toJson());
-									RemoteEndpoint remote = s.getRemote();
-									remote.sendString(action.toJson());
-									remote.flush();
-									log.debug("Poslano....");
-								}
-							} catch (Throwable e) {
-								log.error("Error ", e.getMessage());
-							}
+					if(q.isEmpty()) {
+						try {
+							TimeUnit.MILLISECONDS.sleep(500);
+							continue;
+						} catch (InterruptedException e) {
+							e.printStackTrace();
 						}
+					}
+					log.debug("q ima: {}", q.size());
+					
+					Action action = q.peek();
+					if (action == null) {
+						log.warn("action null");
+						continue;
+
+					}
+					if (connectedPageId.containsKey(action.getPageId())) {
+						if(!q.remove(action)) {
+							log.warn("Nije uklonio akciju");
+						}
+						sendAction(action);
+						log.debug("saljem akciju na "+ action.getPageId());
+					}
+					try {
+						TimeUnit.MILLISECONDS.sleep(900);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
 					}
 
 				}

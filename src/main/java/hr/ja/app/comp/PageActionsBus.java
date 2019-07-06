@@ -20,13 +20,12 @@ public class PageActionsBus {
 
 	Map<String, ListenerHolder> serverLisnteners = new HashMap<>();
 
-	public void add(Tag tag, ClickListener listener) {
-
+	public void add(Tag tag, ClickListener listener, String pageId) {
 		String serverListenerId = addListener(listener);
-		actionsQueue.add(new JsEventAction(tag.getId(), serverListenerId, "click", tag.getId()));
+		actionsQueue.add(new JsEventAction(tag.getId(), serverListenerId, "click", pageId));
 	}
 
-	private int listenerId = 1; // TODO: listener id start ioncrement by paga session od user session
+	private int listenerId = 1; // TODO: listener id start increment by page session of user session
 
 	private String addListener(ClickListener listener) {
 		String id = listenerId++ + "";

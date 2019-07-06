@@ -14,8 +14,8 @@ public class Button extends Tag implements IClickListener {
 	}
 
 	@Override
-	public void addClickListener(ClickListener listener) {
-		PageActionsBus.get().add(this, listener);
+	public void addClickListener(ClickListener listener, String pageId) {
+		PageActionsBus.get().add(this, listener, pageId);
 		clickListeners.add(listener);
 	}
 }

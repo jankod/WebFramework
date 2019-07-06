@@ -19,7 +19,7 @@ import spark.Spark;
 import spark.template.velocity.VelocityTemplateEngine;
 
 @Slf4j
-public class WebappFramework {
+public class WebFramework {
 	ArrayList<Class<? extends Page>> pages = new ArrayList<>();
 
 	PageManager pageManager = new PageManager();

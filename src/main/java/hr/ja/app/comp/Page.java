@@ -20,7 +20,7 @@ public abstract class Page {
 	}
 
 	protected void add(Tag tag) {
-		tag.pageId = this.id;
+//		tag.pageId = this.id;
 		bodyTag.add(tag);
 	}
 
