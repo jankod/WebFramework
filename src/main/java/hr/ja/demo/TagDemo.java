@@ -1,13 +1,6 @@
 package hr.ja.demo;
 
-import java.util.concurrent.TimeUnit;
-
-import hr.ja.app.comp.Button;
-import hr.ja.app.comp.ButtonEvent;
-import hr.ja.app.comp.ClickListener;
-import hr.ja.app.comp.Page;
 import hr.ja.app.comp.PageActionsBus;
-import hr.ja.app.comp.Tag;
 import hr.ja.app.comp.actions.Action;
 import lombok.extern.slf4j.Slf4j;
 

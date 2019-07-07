@@ -2,7 +2,9 @@ package hr.ja.app.comp;
 
 import hr.ja.app.AppUtil;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public abstract class Page {
 
 	private Tag bodyTag = new Tag("body");
@@ -26,6 +28,9 @@ public abstract class Page {
 	}
 
 	protected void add(Tag tag) {
+		if(id == null) {
+			log.warn("Dodajem tag a nemam page id jošš!!!!");
+		}
 		bodyTag.add(tag);
 	}
 

@@ -1,7 +1,6 @@
 package hr.ja.app;
 
 import static spark.Spark.init;
-import static spark.Spark.staticFiles;
 import static spark.Spark.webSocket;
 
 import java.lang.reflect.Constructor;
@@ -9,8 +8,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.apache.commons.lang.math.RandomUtils;
 
 import hr.ja.app.comp.Page;
 import lombok.extern.slf4j.Slf4j;

@@ -1,15 +1,10 @@
 package hr.ja.app.comp;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import hr.ja.app.ListenerHolder;
 import hr.ja.app.comp.actions.Action;
 import hr.ja.app.comp.actions.JsEventAction;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -23,7 +18,7 @@ public class PageActionsBus {
 
 	public void add(Tag tag, ClickListener listener) {
 		String pageId = Page.getThreadLocalPageId();
-		
+
 		ListenerHolder listenerHolder = createListener(listener, pageId);
 		actionsQueue.add(new JsEventAction(tag.getId(), listenerHolder.getId(), "click", pageId));
 	}
@@ -42,5 +37,10 @@ public class PageActionsBus {
 	public static PageActionsBus get() {
 		return instance;
 	}
+
+//	public static <T extends TagEvent<?>> void addListener(ClickNotifier<T> clickNotifier, Class<TagEvent<?>> class1,
+//			TagEventListener<ClickEvent<T>> listener) {
+////	        return component.addListener(eventType, listener);
+//	}
 
 }

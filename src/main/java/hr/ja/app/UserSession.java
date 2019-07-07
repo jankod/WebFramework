@@ -3,7 +3,6 @@ package hr.ja.app;
 import java.util.HashMap;
 
 import hr.ja.app.comp.Page;
-import spark.Session;
 
 public class UserSession {
 
@@ -34,11 +33,6 @@ public class UserSession {
 		return id;
 	}
 
-	public void setConnectedSocket(org.eclipse.jetty.websocket.api.Session session) {
-		String pageId = AppUtil.getPageId(session);
-		UserPage us = pages.get(pageId);
-		assert us != null: "User page je null";
-		us.setConnectedSocket(session);
-	}
+
 
 }

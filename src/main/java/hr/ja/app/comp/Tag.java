@@ -3,7 +3,6 @@ package hr.ja.app.comp;
 import java.util.ArrayList;
 import java.util.List;
 
-import elemental2.dom.EventListener;
 import j2html.tags.ContainerTag;
 
 public class Tag {

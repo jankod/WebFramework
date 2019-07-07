@@ -1,9 +1,5 @@
 package hr.ja.app;
 
-import java.util.HashMap;
-
-import spark.Session;
-
 public class SessionManager {
 
 //	public UserSession getOrCreate(Session sess) {
