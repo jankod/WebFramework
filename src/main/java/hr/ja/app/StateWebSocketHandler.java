@@ -24,11 +24,9 @@ import lombok.extern.slf4j.Slf4j;
 @WebSocket
 public class StateWebSocketHandler {
 
-	private PageManager pageManager;
 
-	public StateWebSocketHandler(PageManager pageManager) {
 
-		this.pageManager = pageManager;
+	public StateWebSocketHandler() {
 		listenServerBus();
 	}
 
@@ -36,13 +34,15 @@ public class StateWebSocketHandler {
 
 	@OnWebSocketConnect
 	public void onConnect(Session session) throws Exception {
-		InetSocketAddress addr = session.getRemoteAddress();
-		String pageId = AppUtil.getPageId(session);
-		connectedPageId.put(pageId, session);
+		
+		
+		UserSession us = AppUtil.getOrCreateSession(session);
+		us.setConnectedSocket(session);
+		
+//		log.debug("User connect, pageID: {}", pageId);
 
-		log.debug("User connect, pageID: {}", pageId);
-
-		// start salji evente za ovaj page id
+		// TODO: start šalji evente za ovaj page id
+		
 	}
 
 	protected void sendAction(Action action) {
@@ -63,7 +63,9 @@ public class StateWebSocketHandler {
 	}
 
 	@OnWebSocketMessage
-	public void onMessage(Session user, String message) {
+	public void onMessage(Session sess, String message) {
+		String pageId = AppUtil.getPageId(sess);
+		
 		log.debug("Dobio sam: {} ", message);
 	}
 

@@ -23,12 +23,16 @@ public class UserMain {
 @Slf4j
 @Route("/")
 class Page1 extends Page {
+
 	public Page1() {
+	}
+	
+	@Override
+	protected void init() {
 		add(new Tag("h1", "Ovo je ništa"));
 		add(new Tag("div", "ovo je text sadsa necu biti ovo"));
 		Button btn = new Button("klikni me");
 		btn.addClickListener(new ClickListener() {
-			@Override
 			public void onClick(ButtonEvent e) {
 				log.debug("clicknuo me!!!! " + e);
 			}

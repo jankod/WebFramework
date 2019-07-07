@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import hr.ja.app.ListenerHolder;
 import hr.ja.app.comp.actions.Action;
 import hr.ja.app.comp.actions.JsEventAction;
 import lombok.AllArgsConstructor;
@@ -18,19 +19,20 @@ public class PageActionsBus {
 
 	private LinkedBlockingQueue<Action> actionsQueue = new LinkedBlockingQueue<>();
 
-	Map<String, ListenerHolder> serverLisnteners = new HashMap<>();
+//	Map<String, ListenerHolder> serverLisnteners = new HashMap<>();
 
-	public void add(Tag tag, ClickListener listener, String pageId) {
-		String serverListenerId = addListener(listener);
-		actionsQueue.add(new JsEventAction(tag.getId(), serverListenerId, "click", pageId));
+	public void add(Tag tag, ClickListener listener) {
+		String pageId = Page.getThreadLocalPageId();
+		
+		ListenerHolder listenerHolder = createListener(listener, pageId);
+		actionsQueue.add(new JsEventAction(tag.getId(), listenerHolder.getId(), "click", pageId));
 	}
 
-	private int listenerId = 1; // TODO: listener id start increment by page session of user session
+	private int listenerId = 1; // TODO: listener id start increment by page or session
 
-	private String addListener(ClickListener listener) {
+	private ListenerHolder createListener(ClickListener listener, String pageId) {
 		String id = listenerId++ + "";
-		serverLisnteners.put(id, new ListenerHolder(id, listener));
-		return id;
+		return new ListenerHolder(id, listener, pageId);
 	}
 
 	public LinkedBlockingQueue<Action> getActionsQueue() {
@@ -40,11 +42,5 @@ public class PageActionsBus {
 	public static PageActionsBus get() {
 		return instance;
 	}
-}
 
-@Data
-@AllArgsConstructor
-class ListenerHolder {
-	String serverListenerId;
-	HtmlListeners listener;
 }

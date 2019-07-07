@@ -22,7 +22,6 @@ import spark.template.velocity.VelocityTemplateEngine;
 public class WebFramework {
 	ArrayList<Class<? extends Page>> pages = new ArrayList<>();
 
-	PageManager pageManager = new PageManager();
 	
 	public void addPage(Class<? extends Page> page) {
 		pages.add(page);
@@ -31,8 +30,9 @@ public class WebFramework {
 	public void start(int port) {
 		try {
 			Spark.port(port);
+			Spark.
 			staticFiles.location("/public"); // Static files
-			StateWebSocketHandler socketHandler = new StateWebSocketHandler(pageManager);
+			StateWebSocketHandler socketHandler = new StateWebSocketHandler();
 			webSocket("/state", socketHandler);
 			init();
 
@@ -40,17 +40,16 @@ public class WebFramework {
 				String route = getRoutePath(p);
 
 				Spark.get(route, (req, res) -> {
-					AppUtil.setUpSession(req);
+					UserSession userSession = AppUtil.getOrCreateSession(req);
 					
 					log.debug("evo pozvao je app");
-					Page page = getInstance(p);
-					
+					Page page = createNewPageInstance(p);
+					userSession.addPage(page);
 					String body = page.renderBody();
 
 					Map<String, Object> model = new HashMap<>();
 					model.put("pageId", page.getId());
 					model.put("bodyHtml", body);
-					pageManager.addPage(page, req);
 					return render(model, "index.vm");
 				});
 			}
@@ -65,7 +64,7 @@ public class WebFramework {
 		}
 	}
 
-	private Page getInstance(Class<? extends Page> p) throws NoSuchMethodException, SecurityException,
+	private Page createNewPageInstance(Class<? extends Page> p) throws NoSuchMethodException, SecurityException,
 			InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		Constructor<? extends Page> c = p.getConstructor();
 		c.setAccessible(true);

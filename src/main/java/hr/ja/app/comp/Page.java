@@ -1,7 +1,6 @@
 package hr.ja.app.comp;
 
-import org.apache.commons.lang.math.RandomUtils;
-
+import hr.ja.app.AppUtil;
 import lombok.Getter;
 
 public abstract class Page {
@@ -10,17 +9,23 @@ public abstract class Page {
 	
 	@Getter
 	private String id;
-
+	
+	private static ThreadLocal<String> pageIdThreadLocal = new ThreadLocal<>();
+	
 	public Page() {
-		this.id = (RandomUtils.nextLong() + "");
+		this.id = AppUtil.createNewPageId();
+		pageIdThreadLocal.set(this.id);
 		init();
+	}
+	
+	public static String getThreadLocalPageId() {
+		return pageIdThreadLocal.get();
 	}
 
 	protected void init() {
 	}
 
 	protected void add(Tag tag) {
-//		tag.pageId = this.id;
 		bodyTag.add(tag);
 	}
 
