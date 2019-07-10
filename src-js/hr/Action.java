@@ -1,10 +1,5 @@
 package hr;
 
-public class Action {
-
-	
-	public static class User {
-		public Long id = 22L;
-	}	
-	
+public abstract class Action {
+	public abstract String getPageId();
 }

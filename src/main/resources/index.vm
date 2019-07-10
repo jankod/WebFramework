@@ -2,21 +2,36 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script>
+        var PAGE_ID = "$pageId";
 
+        var ExternalApi = {};
+        ExternalApi.getPageId = function () {
+            console.log("pozvao me  :)");
+            return "$pageId";
+        }
+        function getPageID() {
+            return PAGE_ID;
+        }
+    </script>
+
+
+
+    ## <script src="require.js"></script>
+    <script data-main="generated/js/hr/ClientCode.js" src="require.js"></script>
     <script src="jquery-3.4.1.js"></script>
-    <script>var PAGE_ID="$pageId";</script>
-    <script src="main.js"></script>
+    ## <script src="generated/js/hr/ClientCode.js"></script>
+##    <script src="main.js"></script>
 </head>
 
-$bodyHtml
-
+    $bodyHtml
 
 <script type="text/javascript">
 
     $(document).ready(function () {
-       //console.log("dodao sam tak ovaj");
+        //console.log("dodao sam tak ovaj");
         //$("#2323").append( "alert('delaa');");
-       // $("body").append("<script>alert('hello world');<\/script>");
+        // $("body").append("<script>alert('hello world');<\/script>");
     });
 
 

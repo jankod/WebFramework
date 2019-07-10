@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.math.RandomUtils;
+import org.eclipse.jetty.websocket.api.UpgradeRequest;
 
 import spark.Request;
 import spark.Session;
@@ -30,7 +31,9 @@ public class AppUtil {
 	}
 
 	public static UserSession getOrCreateSession(org.eclipse.jetty.websocket.api.Session session) {
-		HttpSession hs = (HttpSession) session.getUpgradeRequest().getSession();
+		UpgradeRequest req = session.getUpgradeRequest();
+		req.getSession()
+		HttpSession hs = (HttpSession) req.getSession();
 		UserSession us = (UserSession) hs.getAttribute(UserSession.ATTRIBUTE_NAME);
 		if (us == null) {
 			us = new UserSession(hs.getId());
@@ -50,8 +53,7 @@ public class AppUtil {
 	}
 
 	public static UserPage getPageById(String pageId) {
-		
-		return null;
+		return UserPage.getPage(pageId);
 	}
 
 }

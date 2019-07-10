@@ -6,7 +6,7 @@
       "lastUpdateTimestamp": 1560667972000,
       "modelVersion": "unknown",
       "transpilerVersion": "${jsweet.transpiler.version}",
-      "jsOutputDirPath": "C:\\Projekti\\w2\\WebFramework",
+      "jsOutputDirPath": "C:\\Projekti\\w2\\WebFramework\\src\\main\\resources\\public\\generated\\candies",
       "jsDirPath": "META-INF/resources/webjars/jsweet-core/6.0.1",
       "jsFilesPaths": []
     },
@@ -16,7 +16,7 @@
       "lastUpdateTimestamp": 1482399336000,
       "modelVersion": "unknown",
       "transpilerVersion": "1.2.0",
-      "jsOutputDirPath": "C:\\Projekti\\w2\\WebFramework",
+      "jsOutputDirPath": "C:\\Projekti\\w2\\WebFramework\\src\\main\\resources\\public\\generated\\candies",
       "jsDirPath": "META-INF/resources/webjars/jquery/1.10.0-1.2.0-20161222",
       "jsFilesPaths": [
         "META-INF/resources/webjars/jquery/1.10.0-1.2.0-20161222/jquery.js",
@@ -94,7 +94,7 @@
       "lastUpdateTimestamp": 1482399264000,
       "modelVersion": "unknown",
       "transpilerVersion": "1.2.0",
-      "jsOutputDirPath": "C:\\Projekti\\w2\\WebFramework",
+      "jsOutputDirPath": "C:\\Projekti\\w2\\WebFramework\\src\\main\\resources\\public\\generated\\candies",
       "jsDirPath": "META-INF/resources/webjars/jsweet-core/1.2.0-20161222",
       "jsFilesPaths": []
     }

@@ -19,6 +19,7 @@ import spark.template.velocity.VelocityTemplateEngine;
 public class WebFramework {
 	ArrayList<Class<? extends Page>> pages = new ArrayList<>();
 
+//	HashMap<String, UserPage> idPages = new HashMap<>();
 	
 	public void addPage(Class<? extends Page> page) {
 		pages.add(page);
@@ -27,9 +28,8 @@ public class WebFramework {
 	public void start(int port) {
 		try {
 			Spark.port(port);
-			Spark.
-			staticFiles.location("/public"); // Static files
-			StateWebSocketHandler socketHandler = new StateWebSocketHandler();
+			Spark.staticFiles.location("/public"); // Static files
+			GlobalWebSocketHandler socketHandler = new GlobalWebSocketHandler();
 			webSocket("/state", socketHandler);
 			init();
 
@@ -38,14 +38,20 @@ public class WebFramework {
 
 				Spark.get(route, (req, res) -> {
 					UserSession userSession = AppUtil.getOrCreateSession(req);
-					
-					log.debug("evo pozvao je app");
+					UserPage userPage = new UserPage();
+
 					Page page = createNewPageInstance(p);
-					userSession.addPage(page);
+					userPage.setPage(page);
+					
+					
+					
+					userSession.addPage(userPage);
+					userPage.setUserSession(userSession);
+
 					String body = page.renderBody();
 
 					Map<String, Object> model = new HashMap<>();
-					model.put("pageId", page.getId());
+					model.put("pageId", userPage.getId());
 					model.put("bodyHtml", body);
 					return render(model, "index.vm");
 				});

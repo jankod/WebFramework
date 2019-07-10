@@ -2,9 +2,11 @@ package hr.ja.app.comp;
 
 import java.util.concurrent.LinkedBlockingQueue;
 
+import hr.ClientAction;
+import hr.JsEventAction;
+import hr.ja.app.AppUtil;
 import hr.ja.app.ListenerHolder;
-import hr.ja.app.comp.actions.Action;
-import hr.ja.app.comp.actions.JsEventAction;
+import hr.ja.app.UserPage;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -12,15 +14,13 @@ public class PageActionsBus {
 
 	private static PageActionsBus instance = new PageActionsBus();
 
-	private LinkedBlockingQueue<Action> actionsQueue = new LinkedBlockingQueue<>();
-
-//	Map<String, ListenerHolder> serverLisnteners = new HashMap<>();
 
 	public void add(Tag tag, ClickListener listener) {
-		String pageId = Page.getThreadLocalPageId();
-
+		String pageId = UserPage.getThreadLocalPageId();
 		ListenerHolder listenerHolder = createListener(listener, pageId);
-		actionsQueue.add(new JsEventAction(tag.getId(), listenerHolder.getId(), "click", pageId));
+		JsEventAction action = new JsEventAction(tag.getId(), listenerHolder.getId(), "click", pageId);
+		AppUtil.getPageById(pageId).addAction(action);
+		
 	}
 
 	private int listenerId = 1; // TODO: listener id start increment by page or session
@@ -30,17 +30,7 @@ public class PageActionsBus {
 		return new ListenerHolder(id, listener, pageId);
 	}
 
-	public LinkedBlockingQueue<Action> getActionsQueue() {
-		return actionsQueue;
-	}
-
 	public static PageActionsBus get() {
 		return instance;
 	}
-
-//	public static <T extends TagEvent<?>> void addListener(ClickNotifier<T> clickNotifier, Class<TagEvent<?>> class1,
-//			TagEventListener<ClickEvent<T>> listener) {
-////	        return component.addListener(eventType, listener);
-//	}
-
 }
